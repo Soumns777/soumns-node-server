@@ -24,6 +24,7 @@ app.use(
       'http://localhost:3002',
       'http://localhost:3003',
       'http://localhost:8081',
+      'http://localhost:5173',
     ], // web前端服务器地址
   })
 );
