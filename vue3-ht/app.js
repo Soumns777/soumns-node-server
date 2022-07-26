@@ -36,24 +36,28 @@ app.use(express.urlencoded({ extended: false }));
 
 // 读取文件JSON数据
 function read() {
-  return fs.readFileSync('table-data.json', 'utf-8', function (err, data) {
-    if (err) {
-      console.log(err, '💛💙 初始化表格数据失败');
-      return [];
-    } else {
-      return data;
+  return fs.readFileSync(
+    'mysql/table-data.json',
+    'utf-8',
+    function (err, data) {
+      if (err) {
+        console.log(err, '💛💙 初始化表格数据失败');
+        return [];
+      } else {
+        return data;
+      }
     }
-  });
+  );
 }
 
 // 书写文件JSON数据
 function write(data) {
   let sortData = data.sort(sortList('id'));
-  fs.writeFile('table-data.json', JSON.stringify(data), (err) => {
+  fs.writeFile('mysql/table-data.json', JSON.stringify(data), (err) => {
     if (err) console.log(err, '💛💙 写入新增用户数据失败');
     else {
       console.log(
-        JSON.parse(fs.readFileSync('table-data.json', 'utf8')),
+        JSON.parse(fs.readFileSync('mysql/table-data.json', 'utf8')),
         '💛💙 写入新增用户数据成功'
       );
     }
@@ -233,6 +237,8 @@ app.post('/api/init/table-data', (req, res) => {
       ];
       const { name, age, gender } = req.body.search;
 
+      console.log(reverseData, '💛💙 reverseData');
+
       if (reverseData && reverseData.length > 0) {
         if (name || age || gender) {
           console.log(
@@ -250,7 +256,7 @@ app.post('/api/init/table-data', (req, res) => {
           });
         }
 
-        console.log(JSON.parse(read()).length, '💛💙 init total');
+        // console.log(JSON.parse(read()).length, '💛💙 init total');
         res.send({
           RESULT_MSG: '💛💙初始化表格数据成功',
           RESULT_CODE: '0000',
@@ -259,9 +265,10 @@ app.post('/api/init/table-data', (req, res) => {
         });
       } else {
         res.send({
-          RESULT_MSG: '初始化未知报错',
-          RESULT_CODE: '0001',
+          RESULT_MSG: '💛💙当前页暂无数据',
+          RESULT_CODE: '0000',
           data: [],
+          total: JSON.parse(read()).length,
         });
       }
     } else {
