@@ -11,7 +11,7 @@ npm install
 ## :sweat_drops: 运行
 
 ```shell
-nodemon server/app.js
+nodemon vue3-ht/app.js
 ```
 
 
