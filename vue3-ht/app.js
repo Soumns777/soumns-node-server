@@ -305,25 +305,42 @@ app.post('/api/add-user', (req, res) => {
 
 // 删除用户
 app.post('/api/del-user', (req, res) => {
+  // console.log(req.body, '💛💙 批量删除');
+  const type = Object.prototype.toString.call(req.body).slice(8, -1);
+
   let transferData = JSON.parse(read());
 
   if (transferData && transferData.length > 0) {
-    if (transferData.find((item) => item.id == req.body.id)) {
-      transferData = transferData.filter((item) => item.id != req.body.id);
+    if (type == 'Object') {
+      if (transferData.find((item) => item.id == req.body.id)) {
+        transferData = transferData.filter((item) => item.id != req.body.id);
+        write(transferData);
+        res.send({
+          RESULT_MSG: '删除用户成功',
+          RESULT_CODE: '0000',
+        });
+      } else {
+        res.send({
+          RESULT_MSG: '请不要删除不存在的用户',
+          RESULT_CODE: '0002',
+        });
+      }
+    } else if (type == 'Array') {
+      req.body.forEach((item) => {
+        if (transferData.find((item1) => item1.id == item.id)) {
+          transferData = transferData.filter((item2) => item2.id != item.id);
+        }
+      });
+
       write(transferData);
       res.send({
-        RESULT_MSG: '删除用户成功',
+        RESULT_MSG: '测试批量删除用户成功',
         RESULT_CODE: '0000',
-      });
-    } else {
-      res.send({
-        RESULT_MSG: '请不要删除不存在的用户',
-        RESULT_CODE: '0002',
       });
     }
   } else {
     res.send({
-      RESULT_MSG: '删除用户失败',
+      RESULT_MSG: '测试批量删除用户失败',
       RESULT_CODE: '0001',
     });
   }
@@ -461,16 +478,6 @@ app.post('/api/upload-images', (req, res) => {
 
   res.send({
     RESULT_MSG: '上传成功',
-    RESULT_CODE: '0000',
-  });
-});
-
-// mock 数据
-app.post('/api/mock', (req, res) => {
-  console.log(req.body, '💛💙 mock data');
-
-  res.send({
-    RESULT_MSG: '测试cancelToken成功',
     RESULT_CODE: '0000',
   });
 });
