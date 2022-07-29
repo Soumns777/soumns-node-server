@@ -290,11 +290,22 @@ app.post('/api/init/table-data', (req, res) => {
 // 新增用户
 app.post('/api/add-user', (req, res) => {
   let reverseData = JSON.parse(read());
-  reverseData.push(
-    Object.assign(req.body, {
-      id: (Number(reverseData[reverseData.length - 1].id) + 1).toString(),
-    })
-  );
+
+  if (reverseData.length > 0) {
+    reverseData.push(
+      Object.assign(req.body, {
+        id: (Number(reverseData[reverseData.length - 1].id) + 1).toString(),
+      })
+    );
+  } else {
+    reverseData.push(
+      Object.assign(req.body, {
+        id: '1',
+      })
+    );
+  }
+
+  console.log(reverseData, '💛💙 add-user');
 
   write(reverseData);
   res.send({
@@ -334,13 +345,13 @@ app.post('/api/del-user', (req, res) => {
 
       write(transferData);
       res.send({
-        RESULT_MSG: '测试批量删除用户成功',
+        RESULT_MSG: '批量删除用户成功',
         RESULT_CODE: '0000',
       });
     }
   } else {
     res.send({
-      RESULT_MSG: '测试批量删除用户失败',
+      RESULT_MSG: '批量删除用户失败',
       RESULT_CODE: '0001',
     });
   }
