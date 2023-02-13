@@ -17,6 +17,7 @@ app.use(
       'http://localhost:3030',
       'http://localhost:3000',
       'http://localhost:5173',
+      'http://localhost:8081',
     ], // web前端服务器地址
   })
 );
@@ -86,7 +87,7 @@ app.post('/add', (req, res) => {
 app.post('/init', (req, res) => {
   const _data = readData().length <= 0 ? [] : JSON.parse(readData());
 
-  console.log(req.url, '💙💛url');
+  console.log(req.body, '💙💛url');
 
   res.send({
     RESULT_MSG: '初始化成功',
