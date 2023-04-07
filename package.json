@@ -14,6 +14,7 @@
     "typescript": "^4.3.2"
   },
   "dependencies": {
+    "bankcardinfo": "^2.0.6",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "js-md5": "^0.7.3",
